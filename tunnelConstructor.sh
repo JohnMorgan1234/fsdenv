@@ -39,7 +39,7 @@ function checks() {
 		mkdir ${CONFIG_DIR}
 	fi
 	# check for dependencies
-	deps=("jq" "jo") # remove pwgen since it's not available in AmzLinux2 image
+	deps=("jq" "jo" "pwgen" "qrencode") # remove pwgen if not used since it's not available in AmzLinux2 image
 	# deps=("jq" "jo" "pwgen")
 	for dep in ${deps[@]}
 	do
