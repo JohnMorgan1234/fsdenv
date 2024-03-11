@@ -137,10 +137,9 @@ function launch_container() {
 
 
 function create_qrcode(){
-
-decoded_tunnel=$(base64 -d /tmp/tunnel.b64)
-qrencode -o tunnel.png -l L "${decoded_tunnel}"
-echo ">> Tunnel QR Code saved on ./tunnel.png"
+	decoded_tunnel=$(base64 -d /tmp/tunnel.b64)
+	qrencode -o tunnel.png -l L "${decoded_tunnel}"
+	echo ">> Tunnel QR Code saved on ./tunnel.png"
 }
 
 
