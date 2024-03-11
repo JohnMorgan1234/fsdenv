@@ -136,9 +136,18 @@ function launch_container() {
 }
 
 
+function create_qrcode(){
+
+decoded_tunnel=$(base64 -d /tmp/tunnel.b64)
+qrencode -o tunnel.png -l L "${decoded_tunnel}"
+echo ">> Tunnel QR Code saved on ./tunnel.png"
+}
+
+
 checks
 for server in $(seq 1 ${SERVERS})
 do
 	echo ">> Launching container ${server} ............... [OK]"
-	launch_container
+	launch_container	
 done
+create_qrcode

@@ -60,3 +60,4 @@ harbor-portal/2/debian-12/rootfs/opt/bitnami/scripts/nginx/bitnami-templates/app
 harbor-portal/2/debian-12/rootfs/opt/bitnami/scripts/nginx/bitnami-templates/app-php-prefix.conf.tpl
 harbor-portal/2/debian-12/rootfs/opt/bitnami/scripts/nginx/bitnami-templates/app-prefix.conf.tpl
 harbor-portal/2/debian-12/rootfs/opt/bitnami/scripts/nginx/bitnami-templates/default-https-server-block.conf
+tunnel.png
