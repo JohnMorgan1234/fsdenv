@@ -9,15 +9,13 @@ WG_IMAGE="lscr.io/linuxserver/wireguard:latest"
 
 PUBLIC_IP_ADDR=$(curl -s ifconfig.io)
 COUNTRY_CODEV2=$(curl -s ifconfig.io/country_code)
-#COUNTRY_CODE=$(cat iso3.json|jq -r .${COUNTRY_CODEV2})
 OWNER=$(hostname)
-API_URL="api.vpnroulette.com"
 CONFIG_DIR="/tmp/config"
 INT_SUBNET="10.11.12.0"
 PEERS=1
 SERVERS=1
 TOKEN="eyJH63926714455c64.6319141863926714455ea8.4761803263926714455f18.4944500763926714455f39.13215356"
-LOGS_PATH="/tmp/vpnr_tunnel_factory/"
+LOGS_PATH="/tmp/tunnel_factory/"
 RESPONSE_FILE="response"
 
 
@@ -84,45 +82,15 @@ function gen_post_data() {
 	jo config_file=${CF} qr_code=${QR} country_code=${CC} public_ipv4=${IP}
 }
 
-function get_token() {
 
- 	# get creds
-    VPNR_USER="admin@vpnroulette.com"
-    VPNR_PASSWD="p4st4g4ns4"
-
-    export TOKEN=$(curl -s --request POST \
-    --url https://${API_URL}/api/auth/login \
-    --header 'Content-Type: application/json' \
-    --header 'X-Requested-With: XMLHttpRequest' \
-    --data "{
-        \"email\":\"${VPNR_USER}\",
-        \"password\":\"${VPNR_PASSWD}\",
-        \"remember_me\":true
-    }" | jq -r .token)
-	
-}
 
 
 function get_cfg() {
 	echo ">> Getting CFG for $1 ........."
 	sleep 3
 	CFG_FILE=$(cat $1/peer1/peer1.conf | base64 | xargs | sed "s| ||g")
-	echo $CFG_FILE > /tmp/wargame.b64
-	echo ">> Data saved on /tmp/wargame.b64"
-	
-	# echo ">> Encoding & send data to API ................"
-	# QR_CODE=$(cat $1/peer1/peer1.png | base64 | xargs | sed "s| ||g") 
-    # EXPIRE_DATE=$(date +%Y%m%d-%H%M%S )
-	# get_token
-	# curl -s --location -X POST "https://${API_URL}/api/tunnel/" --header "Authorization: Bearer ${TOKEN}" --header 'Content-Type: application/json' --header 'X-Requested-With: XMLHttpRequest' --data "$(gen_post_data ${CFG_FILE} ${QR_CODE} ${COUNTRY_CODE})" > ${LOGS_PATH}${RESPONSE_FILE} 
-	# # x=$(cat /tmp/vpnr_tunnel_factory/response | jq .config_file)
-	# # echo ${x}
-	# tunnel_id="78741394-7a77-4b70-be00-fbdfac6ebb57"
-
-	# TODO: 
-	# 	- Leer el UUID del tunel que me manda la API y asociarlo con el ID del container que se ha creado
-
-	# gen_post_data ${CFG_FILE} ${QR_CODE} ${COUNTRY_CODE} ${PUBLIC_IP_ADDR}
+	echo $CFG_FILE > /tmp/tunnel.b64
+	echo ">> Data saved on /tmp/tunnel.b64"
 	
 }
 
@@ -137,7 +105,7 @@ function launch_container() {
 	RND_STRING=$(pwgen) # If working with AMZLinux2 just calling the pwgen function :_)
 	# RND_STRING=$(pwgen -A1)
 	RND_PORT=$(random_port)
-	CONTAINER_NAME="vpnr-${RND_STRING}"
+	CONTAINER_NAME="tunnel-${RND_STRING}"
 	tunnel_id=$1
 
 	create_if_not_exist ${CONFIG_DIR}/${CONTAINER_NAME}
@@ -165,9 +133,6 @@ function launch_container() {
 	  ${WG_IMAGE}
 
 	get_cfg ${CONFIG_DIR}/${CONTAINER_NAME}
-	
-	# container_id=$()
-	# store_container_id ${tunnel_id} ${container_id}
 }
 
 
