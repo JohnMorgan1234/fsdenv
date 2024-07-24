@@ -29,3 +29,11 @@ sudo chown $(whoami): /var/run/docker.sock
 # Diagram
 
 ![diagram](diagram.jpg)
+
+# Repo structure:
+
+- main.tf -> The main terraform file
+- starter.sh -> Just a little script to start all this
+- tunnelConstructor.sh -> When wireguard is needed this script will be executed to create tunnels.
+- initHarborFuncional.sh -> A scripts that inits a harvor (was used with the dockerfile)
+- docker-compose.yml -> Deprecated. Will use terraform on this branch
